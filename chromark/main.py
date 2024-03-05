@@ -25,7 +25,7 @@ class Entry:
         return f"{folder_str}/{self.title}"
 
 
-def iterator(bookmark_path):
+def read(bookmark_path):
     folder_start_pattern = r"<DT><H3"
     folder_end_pattern = r"</DL>"
     entry_pattern = r"<DT><A"
@@ -43,7 +43,3 @@ def iterator(bookmark_path):
                 stack.pop()
             else:
                 pass
-
-
-for entry in iterator("bookmarks_2024_3_5.html"):
-    print(entry)

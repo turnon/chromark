@@ -1,1 +1,3 @@
 *.html
+dist
+chromark.egg-info
