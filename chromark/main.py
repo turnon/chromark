@@ -19,7 +19,7 @@ class Entry:
         m = re.match(self.__class__.xlink, line)
         if m:
             self.url = m.group(1)
-            self.datetime = datetime.fromtimestamp(float(m.group(2))).strftime('%F %T')
+            self.datetime = datetime.fromtimestamp(float(m.group(2))).strftime("%F %T")
             self.title = m.group(3)
 
     @property
