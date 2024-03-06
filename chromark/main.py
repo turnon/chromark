@@ -1,4 +1,6 @@
 import re
+from urllib.parse import urlparse
+from datetime import datetime
 
 
 def regexp_extract_first(regexp):
@@ -10,15 +12,19 @@ def regexp_extract_first(regexp):
 
 
 class Entry:
-    xhref = regexp_extract_first(r'HREF="(.*?)"')
-    xdate = regexp_extract_first(r'ADD_DATE="(.*?)"')
-    xtitle = regexp_extract_first(r"<A.*>(.*?)</A>")
+    xlink = r'^\s*<DT><A HREF="(.*)" ADD_DATE="([0-9]+)".*>(.*)</A>.*$'
 
     def __init__(self, folders, line):
         self.folders = [fo for fo in folders]
-        self.url = self.__class__.xhref(line)
-        self.date = self.__class__.xdate(line)
-        self.title = self.__class__.xtitle(line)
+        m = re.match(self.__class__.xlink, line)
+        if m:
+            self.url = m.group(1)
+            self.datetime = datetime.fromtimestamp(float(m.group(2))).strftime('%F %T')
+            self.title = m.group(3)
+
+    @property
+    def netloc(self):
+        return urlparse(self.url).netloc if self.url is not None else None
 
     def __repr__(self):
         folder_str = "/".join(self.folders)
