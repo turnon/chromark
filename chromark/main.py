@@ -1,4 +1,5 @@
 import re
+import json
 from urllib.parse import urlparse
 from datetime import datetime
 
@@ -18,6 +19,12 @@ class Entry:
     @property
     def netloc(self):
         return urlparse(self.url).netloc if self.url is not None else None
+
+    def to_json(self, *keys):
+        data = {}
+        for key in keys:
+            data[key] = getattr(self, key)
+        return json.dumps(data, ensure_ascii=False)
 
     def __repr__(self):
         folder_str = "/".join(self.folders)
